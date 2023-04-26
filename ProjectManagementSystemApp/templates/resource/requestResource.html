@@ -33,11 +33,11 @@
                     <div class="row">
                         <div class="mb-3 col-md-6">
                             <label class="form-label">Booking From</label>
-                            <input type="datetime-local" name="from" class="form-control" required>
+                            <input id="fromDateTime" type="datetime-local" name="from" class="form-control" required>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label class="form-label">Booking Till</label>
-                            <input type="datetime-local" name="till" class="form-control" required>
+                            <input id="tillDateTime" type="datetime-local" name="till" class="form-control" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Request Resource</button>
@@ -46,4 +46,49 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    const fromDT = document.getElementById('fromDateTime');
+    const tillDT = document.getElementById('tillDateTime');
+
+    const now = new Date();
+    
+    var DD = now.getDate();
+    var MM = now.getMonth() + 1;
+    var YYYY = now.getFullYear();
+    var HH = now.getHours();
+    var MN = now.getMinutes();
+
+    if (DD < 10) {
+        DD = '0' + DD;
+    }
+
+    if (MM < 10) {
+        MM = '0' + MM;
+    } 
+
+    if (HH < 10) {
+        HH = '0' + HH;
+    } 
+
+    if (MN < 10){
+        MN = '0' + MN;
+    }
+
+    nowStr = YYYY + '-' + MM + '-' + DD + 'T' + HH + ':' + MN
+
+    fromDT.setAttribute('min', nowStr);
+    tillDT.setAttribute('min', nowStr);
+
+    fromDT.addEventListener("input", (e) => {
+        tillDT.setAttribute('min', fromDT.value)
+    });
+
+
+    tillDT.addEventListener("input", (e) => {
+        fromDT.setAttribute('max', tillDT.getAttribute('value'))
+    })
+</script>
+
 {% endblock %}

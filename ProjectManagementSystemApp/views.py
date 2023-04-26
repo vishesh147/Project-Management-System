@@ -67,7 +67,7 @@ def CreateTeam(request):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
         
     if request.session['employee']['role'] != 'O':
@@ -111,7 +111,7 @@ def ManageTeams(request):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -135,7 +135,7 @@ def TeamDashboard(request, teamID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -168,7 +168,7 @@ def EditMembers(request, teamID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -227,7 +227,7 @@ def CreateProject(request):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     if request.session['employee']['role'] != 'O':
@@ -262,7 +262,7 @@ def EditProject(request, projectID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     if request.session['employee']['role'] != 'O':
@@ -301,7 +301,7 @@ def ViewProjects(request):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -328,7 +328,7 @@ def ProjectDashboard(request, projectID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -382,7 +382,7 @@ def CreateTask(request, projectID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     try: 
@@ -440,7 +440,7 @@ def TaskDashboard(request, taskID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     try:
@@ -496,7 +496,7 @@ def TaskDashboard(request, taskID):
             task.status = 'R'
             task.submitted = datetime.now()
             task.save()
-            messages.success(request, task.taskID + ' : Task Report Rejected.')
+            messages.success(request, task.taskID + ' : Task Report Submitted.')
             return redirect(reverse("ProjectDashboard", kwargs={"projectID":task.projectID}))
     return render(request, 'task/taskDashboard.html', {'form': reportForm, 'task':task, 'teamMembers':teamMembers})
 
@@ -509,7 +509,7 @@ def CreateResource(request):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -538,7 +538,7 @@ def RequestResource(request, resourceID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -580,7 +580,7 @@ def ManageResources(request):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -634,7 +634,7 @@ def DeleteResource(request, resourceID):
         return redirect('Logout')
     
     if not request.session.get('employee'):
-        messages.error(request, "An error occured. Please login again.")
+        messages.error(request, "Session logged out due to inactivity.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']

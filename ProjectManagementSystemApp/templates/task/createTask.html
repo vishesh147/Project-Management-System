@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Allocated Budget</label>
-                            <input max="2147483646" type="number" class="form-control" name="budget" value={{task.allocatedBudget}} required>
+                            <input min="0" max="2147483646" type="number" class="form-control" name="budget" value={{task.allocatedBudget}} required>
                         </div>
                     </div>
                     <div class="mb-3">

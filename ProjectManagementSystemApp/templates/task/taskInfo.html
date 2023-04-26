@@ -78,7 +78,7 @@
                 {% csrf_token %}
                 <div class="col-md-6 mb-2">
                     <label class="form-label">Budget Utilized</label>
-                    <input max="2147483646" required type="number" name="utilizedBudget" class="form-control" value="{{form.utilizedBudget.value}}">
+                    <input min="0" max="2147483646" required type="number" name="utilizedBudget" class="form-control" value="{{form.utilizedBudget.value}}">
                 </div>
                 <label class="form-label">Report</label>
                 <script type="text/javascript">
