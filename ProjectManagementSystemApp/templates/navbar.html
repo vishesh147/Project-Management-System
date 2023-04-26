@@ -196,7 +196,10 @@
       } 
           
       today = yyyy + '-' + mm + '-' + dd;
-      document.querySelectorAll('input[type=date]').setAttribute("min", today);
+      dates = document.querySelectorAll('input[type=date]');
+      for (var i = 0; i < dates.length ; i++) {
+        dates[i].setAttribute("min", today);
+      }
     </script>
 </html>
 

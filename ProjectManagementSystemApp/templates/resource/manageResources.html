@@ -216,11 +216,13 @@
                                 <td>{{resource.bookedFrom}} to {{resource.bookedTill}}</td>                            
                             </tr>
                         </table>
+                        {% if request.session.employee.role == 'RM' %}
                         <form method="POST" class="text-end mb-1">
                             {% csrf_token %}
                             <input type="hidden" name="resourceID" value="{{ resource.resourceID }}" />
                             <input class="btn btn-sm btn-success me-1" name="action" type="submit" value="Mark As Available"/>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
                 {% empty %}
