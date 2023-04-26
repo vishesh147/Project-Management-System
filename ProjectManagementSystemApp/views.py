@@ -30,6 +30,9 @@ def Login(request):
         return redirect('Landing')
     if request.method == "POST":
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user.is_staff:
+            messages.error(request, "Staff accounts cannot be used.")
+            return redirect('Landing')
         if user is not None:
             request.session.set_expiry(0)
             employee = model_to_dict(Employee.objects.get(employeeID=request.POST['username']))
