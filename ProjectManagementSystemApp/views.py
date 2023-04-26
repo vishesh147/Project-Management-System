@@ -18,7 +18,7 @@ def Landing(request):
     if request.user.is_authenticated:
         if request.user.is_staff:
             messages.error(request, "Staff accounts cannot be used.")
-            return redirect('Landing')
+            return redirect('Logout')
         
         if request.session['employee']['role'] == 'RM':
             return redirect('Resources')
