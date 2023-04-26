@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'ProjectManagementSystem.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'djongo',
-            'NAME': 'pms',
+            'NAME': 'PMSDB',
             'CLIENT': {
-                'host': 'mongodb+srv://admin:u2IdrGtOLm8gnpdX@projectmanagementsystem.nhu5mhi.mongodb.net/?retryWrites=true&w=majority'
+                'host': 'mongodb://mongo:oyd5CXpDF7ZQ5UHI4fJ2@containers-us-west-206.railway.app:6478'
             }  
         }
 }
