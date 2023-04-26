@@ -97,6 +97,10 @@
                             <div class="col-md text-end">
                                 <a class="btn btn-outline-dark btn-sm" href="{% url 'RequestResource' resourceID=resource.resourceID %}">Request</a>
                             </div>
+                            {% else %}
+                            <div class="col-md text-end">
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'DeleteResource' resourceID=resource.resourceID %}">Delete</a>
+                            </div>
                             {% endif %}
                         </div>
                     </div>

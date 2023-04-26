@@ -32,6 +32,7 @@ def Landing(request):
 def Login(request):
     if request.user.is_authenticated:
         return redirect('Landing')
+
     if request.method == "POST":
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
@@ -63,6 +64,10 @@ def Logout(request):
 def CreateTeam(request):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
         
     if request.session['employee']['role'] != 'O':
@@ -105,6 +110,10 @@ def ManageTeams(request):
         messages.error(request, "Staff accounts cannot be used.")
         return redirect('Logout')
     
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'RM':
         raise PermissionDenied
@@ -123,6 +132,10 @@ def ManageTeams(request):
 def TeamDashboard(request, teamID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -152,6 +165,10 @@ def TeamDashboard(request, teamID):
 def EditMembers(request, teamID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -209,6 +226,10 @@ def CreateProject(request):
         messages.error(request, "Staff accounts cannot be used.")
         return redirect('Logout')
     
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
+        return redirect('Logout')
+    
     if request.session['employee']['role'] != 'O':
         raise PermissionDenied
     teams = Team.objects.all()
@@ -238,6 +259,10 @@ def CreateProject(request):
 def EditProject(request, projectID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     if request.session['employee']['role'] != 'O':
@@ -275,6 +300,10 @@ def ViewProjects(request):
         messages.error(request, "Staff accounts cannot be used.")
         return redirect('Logout')
     
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'E':
         raise PermissionDenied
@@ -296,6 +325,10 @@ def ViewProjects(request):
 def ProjectDashboard(request, projectID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -346,6 +379,10 @@ def ProjectDashboard(request, projectID):
 def CreateTask(request, projectID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     try: 
@@ -400,6 +437,10 @@ def CreateTask(request, projectID):
 def TaskDashboard(request, taskID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     try:
@@ -467,6 +508,10 @@ def CreateResource(request):
         messages.error(request, "Staff accounts cannot be used.")
         return redirect('Logout')
     
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'RM':
         raise PermissionDenied
@@ -490,6 +535,10 @@ def CreateResource(request):
 def RequestResource(request, resourceID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -528,6 +577,10 @@ def RequestResource(request, resourceID):
 def ManageResources(request):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
         return redirect('Logout')
     
     userRole = request.session['employee']['role']
@@ -570,3 +623,30 @@ def ManageResources(request):
                 'pendingResources':pendingResources,
                 'yourResources':yourResources,
             })
+
+
+def DeleteResource(request, resourceID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "An error occured. Please login again.")
+        return redirect('Logout')
+    
+    userRole = request.session['employee']['role']
+    if userRole != 'RM':
+        raise PermissionDenied
+    
+    try:
+        resource = Resource.objects.get(resourceID=resourceID)
+    except:
+        raise ObjectDoesNotExist
+    
+    if resource.status == 'A':
+        resource.delete()
+        messages.success(request, "Resource deleted successfully.")
+    else:
+        messages.error(request, "Cannot delete a resource in use.")
+    
+    return redirect('Resources')

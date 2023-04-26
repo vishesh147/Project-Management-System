@@ -41,6 +41,7 @@ urlpatterns = [
   
     path('resources/', views.ManageResources, name='Resources'),
     path('create-resource/', views.CreateResource, name='CreateResource'),
+    path('delete-resource/<slug:resourceID>', views.DeleteResource, name='DeleteResource'),
     path('resource-booking-request/<slug:resourceID>', views.RequestResource, name='RequestResource'),
 
     path('tinymce/', include('tinymce.urls')),
