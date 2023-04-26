@@ -127,7 +127,7 @@ class Project(models.Model):
     allocatedBudget = models.PositiveIntegerField(blank=True)
     utilizedBudget = models.PositiveIntegerField(blank=True, default=0)
     deadline = models.DateTimeField()
-    created = models.DateTimeField(default=timezone.now())
+    created = models.DateTimeField(auto_now_add=True)
     completed = models.DateTimeField(blank=True)
     status = models.CharField(max_length=1, default='O',
         choices=[
