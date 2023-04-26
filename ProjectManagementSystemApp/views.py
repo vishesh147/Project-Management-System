@@ -593,6 +593,9 @@ def ManageResources(request):
         except:
             raise ObjectDoesNotExist
         
+        if userRole != 'RM':
+            raise PermissionDenied
+
         if request.POST['action'] == 'Approve':
             resource.status = 'B'
             messages.success(request, resource.resourceID + ' : Resource Request Approved.')
@@ -604,7 +607,7 @@ def ManageResources(request):
             resource.bookedByName = None
             resource.bookedFrom = None
             resource.bookedTill = None
-            messages.success(request, resource.resourceID + ' : Resource Request Rejected.')
+            messages.success(request, resource.resourceID + ' : Resource Marked As Available.')
                     
         resource.save()
         return redirect('Resources')
