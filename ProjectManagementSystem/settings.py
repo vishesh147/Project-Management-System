@@ -31,7 +31,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://project-management-system.up.railway.app/'
 ]
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["project-management-system.up.railway.app"]
 
 # Application definition
 
