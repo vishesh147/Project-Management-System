@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from tinymce.models import HTMLField
 from datetime import datetime
+from django.utils import timezone
 from django.db.models import Avg
 from django.forms import ModelForm
 
@@ -126,7 +127,7 @@ class Project(models.Model):
     allocatedBudget = models.PositiveIntegerField(blank=True)
     utilizedBudget = models.PositiveIntegerField(blank=True, default=0)
     deadline = models.DateTimeField()
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now())
     completed = models.DateTimeField(blank=True)
     status = models.CharField(max_length=1, default='O',
         choices=[
