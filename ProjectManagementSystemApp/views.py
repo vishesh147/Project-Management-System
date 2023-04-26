@@ -16,6 +16,10 @@ from django.contrib import messages
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Landing(request):
     if request.user.is_authenticated:
+        if request.user.is_staff:
+            messages.error(request, "Staff accounts cannot be used.")
+            return redirect('Landing')
+        
         if request.session['employee']['role'] == 'RM':
             return redirect('Resources')
         else:
