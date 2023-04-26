@@ -56,6 +56,10 @@ def Logout(request):
 # Only for Owner
 @login_required
 def CreateTeam(request):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+        
     if request.session['employee']['role'] != 'O':
         raise PermissionDenied
     if request.method == "POST":
@@ -92,6 +96,10 @@ def CreateTeam(request):
 # Owner and Project Manager
 @login_required
 def ManageTeams(request):
+    if user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'RM':
         raise PermissionDenied
@@ -108,6 +116,10 @@ def ManageTeams(request):
 # Owner, PM and Employee
 @login_required
 def TeamDashboard(request, teamID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'E':
         raise PermissionDenied
@@ -133,6 +145,10 @@ def TeamDashboard(request, teamID):
 # Owner, Project Manager
 @login_required
 def EditMembers(request, teamID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM':
         raise PermissionDenied
@@ -184,6 +200,10 @@ def EditMembers(request, teamID):
 # Only for Owner
 @login_required
 def CreateProject(request):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     if request.session['employee']['role'] != 'O':
         raise PermissionDenied
     teams = Team.objects.all()
@@ -211,6 +231,10 @@ def CreateProject(request):
 
 @login_required
 def EditProject(request, projectID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     if request.session['employee']['role'] != 'O':
         raise PermissionDenied
     try:
@@ -242,6 +266,10 @@ def EditProject(request, projectID):
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ViewProjects(request):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'E':
         raise PermissionDenied
@@ -261,6 +289,10 @@ def ViewProjects(request):
 
 @login_required
 def ProjectDashboard(request, projectID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'E':
         raise PermissionDenied
@@ -307,6 +339,10 @@ def ProjectDashboard(request, projectID):
 
 @login_required
 def CreateTask(request, projectID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     try: 
         project = Project.objects.get(projectID=projectID)
     except:
@@ -357,6 +393,10 @@ def CreateTask(request, projectID):
 
 @login_required
 def TaskDashboard(request, taskID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     try:
         task = Task.objects.get(taskID=taskID)
     except:
@@ -418,6 +458,10 @@ def TaskDashboard(request, taskID):
 
 @login_required
 def CreateResource(request):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'RM':
         raise PermissionDenied
@@ -439,6 +483,10 @@ def CreateResource(request):
 
 
 def RequestResource(request, resourceID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'E':
         raise PermissionDenied
@@ -473,6 +521,10 @@ def RequestResource(request, resourceID):
 
 
 def ManageResources(request):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
     userRole = request.session['employee']['role']
     if userRole != 'O' and userRole != 'PM' and userRole != 'E' and userRole != 'RM':
         raise PermissionDenied
