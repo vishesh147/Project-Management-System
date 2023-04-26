@@ -101,7 +101,7 @@ def CreateTeam(request):
 # Owner and Project Manager
 @login_required
 def ManageTeams(request):
-    if user.is_staff:
+    if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
         return redirect('Logout')
     
