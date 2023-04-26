@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-12 mb-2">
+        {% if team %}
+        <h5 class="m-0">Edit Team</h5>
+        {% else %}
+        <h5 class="m-0">Create Team</h5>
+        {% endif %}
+        <hr class="border-3 my-2">
+    </div>
+    <div class="col-12 mb-3">
+        <div class="row px-2">
+            <div class="p-3 bg-body-secondary rounded-3">
+                <form method="POST" action="{% url 'CreateTeam' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Team Name</label>
+                            <input maxlength="64" type="text" class="form-control" name="name" required value="{{team.name}}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Manager</label>
+                            <select class="form-select" required name="manager"> 
+                                {% if team %}
+                                <option disabled value="">Manager</option>
+                                {% else %}
+                                <option selected disabled value="">Manager</option>
+                                {% endif %}
+
+                                {% for manager in managers %}
+                                {% if team.managerID == manager %}
+                                <option selected value="{{manager.name}}-{{manager}}">{{manager.name}} ({{manager}})</option>
+                                {% else  %}
+                                <option value="{{manager.name}}-{{manager}}">{{manager.name}} ({{manager}})</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name='description' class="form-control" 
+                            placeholder="Describe purpose and working of the team" style="height: 100px" required>{{team.description}}</textarea>
+                    </div>
+                    {% if team %}
+                    <input type="hidden" value="{{team.teamID}}" name="teamID"/>
+                    <button type="submit" class="btn btn-success">Confirm Edit</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-success">Create Team</button>
+                    {% endif %}
+                </form>            
+            </div>
+        </div>
+    </div>
+</div>

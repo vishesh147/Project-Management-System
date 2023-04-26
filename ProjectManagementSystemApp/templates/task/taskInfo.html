@@ -1,0 +1,110 @@
+<div class="">
+    <div class="col-12 mb-3">
+        <div class="row px-2 mb-3">
+            <div class="py-2 px-3 bg-primary-subtle rounded-3">
+                <div class="mb-2">{{task.description}}</div>
+                <table class="mb-2">
+                    <tr>
+                        <td class="fw-semibold">Project</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.projectID}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Assigned To</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.employeeName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Assigned On</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.assigned|date:"D, d M Y"}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Deadline</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.deadline|date:"D, d M Y"}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Allocated Budget</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.allocatedBudget}}</td>                            
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Status</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.get_status_display}}</td>                            
+                    </tr>
+                    {% if task.completed %}
+                    <tr>
+                        <td class="fw-semibold">Completed On</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.completed|date:"D, d M Y" }}</td>                            
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if task.status == 'C' or request.session.employee.employeeID != task.employeeID %}
+
+{% include "task/taskReport.html" with task=task %}
+
+{% if request.session.employee.employeeID == task.managerID %}
+    {% if task.status == 'R' %}
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="review" value="approved">
+        {% include 'task/rating.html' %}
+        <button type="submit" class="btn btn-success mt-3">Approve Report</button>
+    </form>
+    {% endif %}
+{% endif %}
+
+{% else %}
+<div class="col-12 mb-2 mt-2">
+    {% if task.status == 'R' %}
+    <h4 class="m-0">Edit Report</h4>
+    {% else %}
+    <h4 class="m-0">Submit Report</h4>
+    {% endif %}
+    <hr class="border-3 my-2">
+</div>
+<div class="col-12 mb-3">
+    <div class="row px-2">
+        <div class="p-3 bg-body-secondary rounded-3">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="col-md-6 mb-2">
+                    <label class="form-label">Budget Utilized</label>
+                    <input max="2147483646" required type="number" name="utilizedBudget" class="form-control" value="{{form.utilizedBudget.value}}">
+                </div>
+                <label class="form-label">Report</label>
+                <script type="text/javascript">
+                    tinymce.init({
+                        selector: "textarea",
+                        height : 320,
+                        branding: false,
+                        forced_root_block : 'div',
+                        elementpath: false,
+                        plugins: [
+                            "advlist", "anchor", "autolink", "charmap", "fullscreen",
+                            "help", "insertdatetime", "link", "lists",
+                            "preview", "searchreplace", "table", "visualblocks", "spellchecker"
+                        ],
+                        toolbar: "undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | link spellchecker",
+                        setup: function (editor) {
+                            editor.on('change', function () {
+                                tinymce.triggerSave();
+                            });
+                        }
+                    });
+                </script>
+                {{ form.report }}
+                <button type="submit" class="btn btn-success mt-3">Submit Report</button>
+            </form>            
+        </div>
+    </div>
+</div>
+{% endif %}

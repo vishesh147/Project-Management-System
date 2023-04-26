@@ -1,0 +1,112 @@
+<div class="row">
+    <div class="col-12 mb-2">
+        {% if task %}
+        <h5 class="m-0">Edit Task</h5>
+        {% else %}
+        <h5 class="m-0">Create New Task</h5>
+        {% endif %}
+        <hr class="border-3 my-2">
+    </div>
+    <div class="col-12 mb-3">
+        <div class="row px-2">
+            <div class="p-3 bg-body-secondary rounded-3">
+                {% if project %}
+                <form method="POST" action="{% url 'CreateTask' projectID=project.projectID %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Task Title</label>
+                            <input maxlength="64" type="text" class="form-control" name="title" required value="{{task.title}}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Allocated Budget</label>
+                            <input max="2147483646" type="number" class="form-control" name="budget" value={{task.allocatedBudget}} required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name='description' class="form-control" placeholder="Describe the task" style="height: 100px" required>{{task.description}}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Task Assignee</label>
+                            <select class="form-select" required name="assignee"> 
+                                {% if task %}
+                                <option disabled value="">Team Member</option>
+                                {% else %}
+                                <option selected disabled value="">Team Member</option>
+                                {% endif %}
+                                {% for member in teamMembers %}
+                                    {% if member == task.employeeID %}
+                                    <option value="{{member.name}}-{{member}}" selected>{{member.name}} ({{member}})</option>
+                                    {% else %}
+                                    <option value="{{member.name}}-{{member}}">{{member.name}} ({{member}})</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Deadline</label>
+                            <input type="date" name="deadline" class="form-control" value="{{task.deadline}}">
+                        </div>
+                    </div>
+                    {% if task %}
+                    <input type="hidden" value="{{task.taskID}}" name="taskID"/>
+                    <button type="submit" class="btn btn-success">Confirm Edit</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-success">Create Task</button>
+                    {% endif %}
+                </form>  
+                {% elif task %}
+                <form method="POST" action="{% url 'CreateTask' projectID=task.projectID %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Task Title</label>
+                            <input maxlength="64" type="text" class="form-control" name="title" required value="{{task.title}}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Allocated Budget</label>
+                            <input max="2147483646" type="number" class="form-control" name="budget" value={{task.allocatedBudget}} required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name='description' class="form-control" placeholder="Describe the task" style="height: 100px" required>{{task.description}}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Task Assignee</label>
+                            <select class="form-select" required name="assignee"> 
+                                {% if task %}
+                                <option disabled value="">Team Member</option>
+                                {% else %}
+                                <option selected disabled value="">Team Member</option>
+                                {% endif %}
+                                {% for member in teamMembers %}
+                                    {% if member == task.employeeID %}
+                                    <option value="{{member.name}}-{{member}}" selected>{{member.name}} ({{member}})</option>
+                                    {% else %}
+                                    <option value="{{member.name}}-{{member}}">{{member.name}} ({{member}})</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Deadline</label>
+                            <input type="date" name="deadline" class="form-control" value='{{task.deadline|date:"Y-m-d" }}'>
+                        </div>
+                    </div>
+                    {% if task %}
+                    <input type="hidden" value="{{task.taskID}}" name="taskID"/>
+                    <button type="submit" class="btn btn-success">Confirm Edit</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-success">Create Task</button>
+                    {% endif %}
+                </form> 
+                {% endif %}
+          
+            </div>
+        </div>
+    </div>
+</div>

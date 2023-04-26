@@ -1,0 +1,115 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="row px-2 px-md-4 py-4">
+    <div class="col-12 mb-2">
+        <h3 class="m-0">{{team.teamID}} : {{team.name}}</h3>
+        <hr class="border-3 my-2">
+    </div>
+
+    <div style="overflow-y: scroll; height: 75vh !important;">
+        <ul class="nav nav-tabs sticky-top bg-light" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="team-info-tab" data-bs-toggle="tab" data-bs-target="#team-info-tab-pane" type="button" role="tab" aria-controls="team-info-tab-pane" aria-selected="true">
+                    Team Info
+                </button>
+            </li>
+            {% if request.session.employee.role == 'O' %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="edit-team-tab" data-bs-toggle="tab" data-bs-target="#edit-team-tab-pane" type="button" role="tab" aria-controls="edit-team-tab-pane" aria-selected="false">
+                    Edit Team
+                </button>
+            </li>
+            {% endif %}
+            {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+            <li class="nav-item dropdown"  role="presentation">
+                <a class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Manage Members</a>
+                <ul class="dropdown-menu">
+                  <li class="mb-1">
+                    <button class="dropdown-item" id="add-members-tab" data-bs-toggle="tab" data-bs-target="#add-members-tab-pane" type="button" role="tab" aria-controls="add-members-tab-pane" aria-selected="true">
+                        Add Members
+                    </button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item" id="remove-members-tab" data-bs-toggle="tab" data-bs-target="#remove-members-tab-pane" type="button" role="tab" aria-controls="remove-members-tab-pane" aria-selected="false">
+                        Remove Members
+                    </button>
+                  </li>
+                </ul>
+            </li>
+            {% endif %}
+            <li class="nav-item dropdown"  role="presentation">
+                <a class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">View Projects</a>
+                <ul class="dropdown-menu">
+                  <li class="mb-1">
+                    <button class="dropdown-item" id="ongoing-projects-tab" data-bs-toggle="tab" data-bs-target="#ongoing-projects-tab-pane" type="button" role="tab" aria-controls="ongoing-projects-tab-pane" aria-selected="true">
+                        Ongoing Projects
+                    </button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item" id="completed-projects-tab" data-bs-toggle="tab" data-bs-target="#completed-projects-tab-pane" type="button" role="tab" aria-controls="completed-projects-tab-pane" aria-selected="false">
+                        Completed Projects
+                    </button>
+                  </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="tab-content py-3 mx-1" id="myTabContent">
+            <div class="tab-pane active fade show" id="team-info-tab-pane" role="tabpanel" aria-labelledby="team-info-tab" tabindex="0">
+                {% include "team/teamInfo.html" with team=team members=members %}
+            </div>
+
+            {% if request.session.employee.role == 'O' %}
+            <div class="tab-pane fade" id="edit-team-tab-pane" role="tabpanel" aria-labelledby="edit-team-tab" tabindex="0">
+                {% include "team/createTeam.html" with team=team managers=managers %}
+            </div>
+            {% endif %}
+
+            <div class="tab-pane fade" id="add-members-tab-pane" role="tabpanel" aria-labelledby="add-members-tab" tabindex="0">
+                {% include "team/editMembers.html" with team=team employeeList=freeEmployees type='success' %}
+            </div>
+            <div class="tab-pane fade" id="remove-members-tab-pane" role="tabpanel" aria-labelledby="remove-members-tab" tabindex="0">
+                {% include "team/editMembers.html" with team=team employeeList=members type='danger' %}
+            </div>
+
+            {% for category, color, projects in teamProjects %}
+            <div class="tab-pane fade" id="{{category}}-projects-tab-pane" role="tabpanel" aria-labelledby="{{category}}-projects-tab" tabindex="0">
+                <div>
+                    {% for project in projects %}
+                    <div class="row px-2 mb-3">
+                        <div class="py-2 px-3 bg-{{color}}-subtle rounded-3">
+                            <h5 class="mt-1">{{project.projectID}} : {{project.title}}</h5>
+                            <div class="mb-2">{{ project.description }}</div>
+                            <table class="mb-3">
+                                <tr>
+                                    <td class="fw-semibold">Client</td>
+                                    <td class="px-2">:</td>
+                                    <td>{{project.client}}</td>
+                                </tr>
+                            </table>
+                            {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+                            <div class="mb-2 text-end">
+                                <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">Manage</a>
+                            </div>
+                            {% elif request.session.employee.role == 'E' %}
+                            <div class="mb-2 text-end">
+                                <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">View Details</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="row justify-content-center">
+                        <i class="text-center">No projects to display.</i>
+                    </div> 
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,64 @@
+<!-- Tabs --->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<ul class="nav nav-tabs sticky-top bg-light" id="myTab" role="tablist">
+    <li class="nav-item dropdown"  role="presentation">
+        <a class="nav-link active dropdown-toggle fw-semibold" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Manage Tasks</a>
+        <ul class="dropdown-menu">
+            <li class="mb-1">
+            <button class="dropdown-item active" id="in-progress-tasks-tab" data-bs-toggle="tab" data-bs-target="#in-progress-tasks-tab-pane" type="button" role="tab" aria-controls="in-progress-tasks-tab-pane" aria-selected="true">
+                In Progress Tasks
+            </button>
+            </li>
+            <li>
+            <button class="dropdown-item" id="submitted-for-review-tasks-tab" data-bs-toggle="tab" data-bs-target="#submitted-for-review-tasks-tab-pane" type="button" role="tab" aria-controls="submitted-for-review-tasks-tab-pane" aria-selected="false">
+                Review Tasks
+            </button>
+            </li>
+            <li>
+            <button class="dropdown-item" id="completed-tasks-tab" data-bs-toggle="tab" data-bs-target="#completed-tasks-tab-pane" type="button" role="tab" aria-controls="completed-tasks-tab-pane" aria-selected="false">
+                Completed Tasks
+            </button>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+            <button class="dropdown-item" id="create-task-tab" data-bs-toggle="tab" data-bs-target="#create-task-tab-pane" type="button" role="tab" aria-controls="create-task-tab-pane" aria-selected="false">
+                Create Task
+            </button>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress-tab-pane" type="button" role="tab" aria-controls="progress-tab-pane" aria-selected="false">
+            Progress Tracking
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold" id="budget-tab" data-bs-toggle="tab" data-bs-target="#budget-tab-pane" type="button" role="tab" aria-controls="budget-tab-pane" aria-selected="false">
+            Budget Tracking
+        </button>
+    </li>
+</ul>
+
+
+<div class="tab-content py-3 mx-1" id="myTabContent">
+    <!-- Tasks Tab -->
+    {% include 'task/tasks.html' with active="active" show="show" color="warning" status="In Progress" tasks=inprogress %}
+    <!-- Submitted For Review -->
+    {% include 'task/tasks.html' with status='Submitted For Review' color="info" tasks=review %}
+    <!-- Completed -->
+    {% include 'task/tasks.html' with status='Completed' color="success" tasks=completed %}
+    <!-- Create Task Form Pane -->
+    <div class="tab-pane fade" id="create-task-tab-pane" role="tabpanel" aria-labelledby="create-task-tab" tabindex="0">
+        {% include 'task/createTask.html' with project=project %}
+    </div>
+
+    <div class="tab-pane fade" id="progress-tab-pane" role="tabpanel" aria-labelledby="progress-tab" tabindex="0">
+        {% include 'project/progressTracking.html' with tasksByStatus=tasksByStatus completionPercentage=completionPercentage project=project totalTasks=totalTasks %}
+    </div>
+
+    <div class="tab-pane fade" id="budget-tab-pane" role="tabpanel" aria-labelledby="budget-tab" tabindex="0">
+        {% include 'project/budgetTracking.html' with allocatedBudget=project.allocatedBudget utilizedBudget=project.utilizedBudget %}
+    </div>
+</div>

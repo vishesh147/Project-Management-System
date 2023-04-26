@@ -1,0 +1,76 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="row px-2 px-md-4 py-4">
+    <div class="col-12 mb-2">
+        <h3 class="m-0">Team Management Dashboard</h3>
+        <hr class="border-3 my-2">
+    </div>
+
+    <div style="overflow-y: scroll; height: 75vh !important;">
+        <ul class="nav nav-tabs sticky-top bg-light" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="view-teams-tab" data-bs-toggle="tab" data-bs-target="#view-teams-tab-pane" type="button" role="tab" aria-controls="view-teams-tab-pane" aria-selected="true">
+                    Teams
+                </button>
+            </li>
+            {% if request.session.employee.role == 'O' %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="create-team-tab" data-bs-toggle="tab" data-bs-target="#create-team-tab-pane" type="button" role="tab" aria-controls="create-team-tab-pane" aria-selected="false">
+                    Create A Team
+                </button>
+            </li>
+            {% else %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" disabled id="create-team-tab" data-bs-toggle="tab" data-bs-target="#create-team-tab-pane" type="button" role="tab" aria-controls="create-team-tab-pane" aria-selected="false">
+                    Create A Team
+                </button>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="tab-content py-3 mx-1" id="myTabContent">
+            <div class="tab-pane active fade show" id="view-teams-tab-pane" role="tabpanel" aria-labelledby="view-teams-tab" tabindex="0">
+                {% for team in teams %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-primary-subtle rounded-3">
+                        <h5 class="mt-1">{{ team.teamID }} : {{team.name}}</h5>
+                        <div class="mb-2">{{ team.description }}</div>
+                        <table class="mb-3">
+                            <tr>
+                                <td class="fw-semibold">Team Size</td>
+                                <td class="px-2">:</td>
+                                <td>{{team.size}}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Managed By</td>
+                                <td class="px-2">:</td>
+                                <td>{{ team.managerName }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Created On</td>
+                                <td class="px-2">:</td>
+                                <td>{{ team.created }}</td>
+                            </tr>
+                        </table>
+                        {% if request.session.employee.role != 'RM' and request.session.employee.role != 'E' %}
+                        <div class="mb-2 text-end">
+                            <a class="btn btn-outline-dark btn-sm" href="{% url 'TeamDashboard' teamID=team.teamID %}">Manage Team</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% if request.session.employee.role == 'O' %}
+            <div class="tab-pane fade" id="create-team-tab-pane" role="tabpanel" aria-labelledby="create-team-tab" tabindex="0">
+                {% include 'team/createTeam.html' %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}

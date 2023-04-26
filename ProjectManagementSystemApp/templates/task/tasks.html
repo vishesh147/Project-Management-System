@@ -1,0 +1,61 @@
+<div class="tab-pane {{active}} fade {{show}}" id="{{status|slugify}}-tasks-tab-pane" role="tabpanel" aria-labelledby="{{status|slugify}}-tasks-tab" tabindex="0">
+    <div class="row">
+        {% if not notitle %}
+        <div class="col-12 mb-2">
+            {% if status == 'Submitted For Review' %}
+            <h5 class="m-0">Review Task Reports</h5>
+            {% else %}
+            <h5 class="m-0">{{status}} Tasks</h5>
+            {% endif %}
+            <hr class="border-3 my-2 mb-1">
+        </div>
+        {% endif %}
+        <div class="col-12">
+            {% for task in tasks %}
+            <div class="row px-2 mb-2">
+                <div class="py-2 px-3 bg-{{color}}-subtle rounded-3">
+                    <div class="">
+                        <span class="mt-1 fw-semibold">{{task.taskID}} : {{task.title}}</span><br/>
+                        <span class="text-wrap">{{task.description}}</span>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md mt-1 text-muted text-start" style="font-size: 14px">
+                            Assigned to {{ task.employeeName }}, on {{ task.assigned}}<br/>
+                            {% if task.status == 'C' %}
+                            Completed on {{task.completed}}
+                            {% endif %}
+                        </div>
+
+                        {% if task.status == 'R' and request.session.employee.employeeID == task.employeeID %}
+                        <div class="col-md-auto mt-2 text-end">
+                            <a class="btn btn-sm btn-outline-dark" href="{% url 'TaskDashboard' taskID=task.taskID %}">Edit Report</a>
+                        </div>
+                        {% elif task.status == 'I' %}
+                            {% if request.session.employee.employeeID == task.employeeID %}
+                            <div class="col-md-auto mt-2 text-end">
+                                <a class="btn btn-sm btn-outline-dark" href="{% url 'TaskDashboard' taskID=task.taskID %}">Submit Report</a>
+                            </div>
+                            {% elif request.session.employee.employeeID == task.managerID %}
+                            <div class="col-md-auto mt-2 text-end">
+                                <a class="btn btn-sm btn-outline-dark" href="{% url 'TaskDashboard' taskID=task.taskID %}">View Task</a>
+                            </div>
+                            {% endif %}
+
+                        {% elif task.status == 'C' or task.status == 'R' %}
+                            {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' or request.session.employee.employeeID == task.employeeID %}
+                            <div class="col-md-auto mt-2 text-end">
+                                <a class="btn btn-sm btn-outline-dark" href="{% url 'TaskDashboard' taskID=task.taskID %}">View Report</a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="row justify-content-center">
+                <i class="text-center">No tasks to display.</i>
+            </div>            
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="row px-2 px-md-4 py-4">
+    <div class="col-12 mb-2">
+        <h3 class="m-0">Your Projects</h3>
+        <hr class="border-3 my-2">
+    </div>
+    <div style="overflow-y: scroll; height: 75vh !important;">
+        <ul class="nav nav-tabs sticky-top bg-light" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="ongoing-projects-tab" data-bs-toggle="tab" data-bs-target="#ongoing-projects-tab-pane" type="button" role="tab" aria-controls="ongoing-projects-tab-pane" aria-selected="true">
+                    Ongoing Projects
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="completed-projects-tab" data-bs-toggle="tab" data-bs-target="#completed-projects-tab-pane" type="button" role="tab" aria-controls="completed-projects-tab-pane" aria-selected="false">
+                    Completed Projects
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content py-3 mx-1" id="myTabContent">
+            <div class="tab-pane active fade show" id="ongoing-projects-tab-pane" role="tabpanel" aria-labelledby="ongoing-projects-tab" tabindex="0">
+                {% for project in ongoingProjects %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-info-subtle rounded-3">
+                        <h5 class="mt-1">{{project.projectID}} : {{project.title}}</h5>
+                        <div class="mb-2">{{ project.description }}</div>
+                        <table class="mb-2">
+                            <tr>
+                                <td class="fw-semibold">Client</td>
+                                <td class="px-2">:</td>
+                                <td>{{project.client}}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Managed By</td>
+                                <td class="px-2">:</td>
+                                <td>{{project.managerName}}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Team</td>
+                                <td class="px-2">:</td>
+                                <td>{{project.teamName}}</td>                            
+                            </tr>
+                        </table>
+                        {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+                        <div class="mb-2 text-end">
+                            <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">Manage</a>
+                        </div>
+                        {% elif request.session.employee.role == 'E' %}
+                        <div class="mb-2 text-end">
+                            <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">View Details</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No projects to display.</i>
+                </div> 
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="completed-projects-tab-pane" role="tabpanel" aria-labelledby="completed-projects-tab" tabindex="0">
+                {% for project in completedProjects %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-success-subtle rounded-3">
+                        <h5 class="mt-1">{{project.projectID}} : {{project.title}}</h5>
+                        <div class="mb-2">{{ project.description }}</div>
+                        <table class="mb-3">
+                            <tr>
+                                <td class="fw-semibold">Client</td>
+                                <td class="px-2">:</td>
+                                <td>{{project.client}}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Managed By</td>
+                                <td class="px-2">:</td>
+                                <td>{{project.managerName}}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Team</td>
+                                <td class="px-2">:</td>
+                                <td>{{project.teamName}}</td>                            
+                            </tr>
+                        </table>
+                        {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+                        <div class="mb-2 text-end">
+                            <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">Manage</a>
+                        </div>
+                        {% elif request.session.employee.role == 'E' %}
+                        <div class="mb-2 text-end">
+                            <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">View Details</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No projects to display.</i>
+                </div> 
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

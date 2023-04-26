@@ -1,0 +1,72 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="row px-2 px-md-4 py-4">
+    <div class="col-12 mb-2">
+        {% if project %}
+        <h3 class="m-0">Edit Project</h3>
+        {% else %}
+        <h3 class="m-0">Create New Project</h3>
+        {% endif %}
+        <hr class="border-3 my-2">
+    </div>
+    <div class="col-12 mb-3">
+        <div class="row px-2">
+            <div class="p-3 bg-body-secondary rounded-3">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label class="form-label">Project Title</label>
+                      <input maxlength="64" type="text" class="form-control" name="title" value="{{project.title}}" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Client</label>
+                            <input maxlength="64" type="text" class="form-control" name="client" value="{{project.client}}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Budget</label>
+                            <input max="2147483646" type="number" class="form-control" name="budget" value="{{project.allocatedBudget}}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Description</label>
+                      <textarea name='description' class="form-control" placeholder="Describe the project" style="height: 100px" required>{{project.description}}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Team</label>
+                            <select class="form-select" required name="team"> 
+                                {% if project %}
+                                <option disabled value="">Team</option>
+                                {% else %}
+                                <option selected disabled value="">Team</option>
+                                {% endif %}
+                                {% for team in teams %}
+                                    {% if project and project.teamID == team %}
+                                    <option selected value="{{team}}">{{team.name}}</option>
+                                    {% else %}
+                                    <option value="{{team}}">{{team.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Deadline</label>
+                            <input type="date" name="deadline" class="form-control" value='{{project.deadline|date:"Y-m-d"}}'>
+                        </div>
+                        
+                    </div>
+                    {% if project %}
+                    <button type="submit" class="btn btn-success">Confirm Edit</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-success">Create Project</button>
+                    {% endif %}
+                </form>            
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

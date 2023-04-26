@@ -1,0 +1,58 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="row px-2 px-md-4 py-4">
+    <div class="col-12 mb-2">
+        <h3 class="m-0">{{project.projectID}} : {{project.title}}</h3>
+        <hr class="border-3 my-2">
+    </div>
+    <div class="" style="overflow-y: scroll; height: 75vh !important;">
+        <div class="col-12 mb-3">
+            <div class="row px-2 mb-3">
+                <div class="py-2 px-3 bg-primary-subtle rounded-3">
+                    <div class="mb-2">{{project.description}}</div>
+                    <table class="mb-2">
+                        <tr>
+                            <td class="fw-semibold">Client</td>
+                            <td class="px-2">:</td>
+                            <td>{{project.client}}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Managed By</td>
+                            <td class="px-2">:</td>
+                            <td>{{project.managerName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Team</td>
+                            <td class="px-2">:</td>
+                            <td>{{project.teamName}}</td>                            
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Allocated Budget</td>
+                            <td class="px-2">:</td>
+                            <td>{{project.allocatedBudget}}</td>                            
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Deadline</td>
+                            <td class="px-2">:</td>
+                            <td>{{project.deadline|date:"D, d M Y"}}</td>                            
+                        </tr>
+                    </table>
+                    {% if request.session.employee.role == 'O' %}
+                    <div class="text-end mb-1">
+                        <a class="btn btn-sm btn-outline-dark" href="{% url 'EditProject' projectID=project.projectID %}">Edit Project</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+            {% include 'project/managementDashboard.html' with project=project teamMembers=teamMembers inprogress=inprogress review=review completed=completed %}
+        {% elif request.session.employee.role == 'E' %}
+            {% include 'project/employeeDashboard.html' with inprogress=inprogress review=review completed=completed %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

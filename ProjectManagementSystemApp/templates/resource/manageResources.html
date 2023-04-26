@@ -1,0 +1,271 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="row px-2 px-md-4 py-4">
+    <div class="col-12 mb-2">
+        <h3 class="m-0">Resources</h3>
+        <hr class="border-3 my-2">
+    </div>
+    <div style="overflow-y: scroll; height: 75vh !important;">
+        <ul class="nav nav-tabs sticky-top bg-light" id="myTab" role="tablist">
+            <li class="nav-item dropdown"  role="presentation">
+                <a class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Resources</a>
+                <ul class="dropdown-menu">
+                    {% if request.session.employee.role != 'RM' %}
+                    <li class="mb-1">
+                        <button class="dropdown-item active" id="available-resources-tab" data-bs-toggle="tab" data-bs-target="#available-resources-tab-pane" type="button" role="tab" aria-controls="available-resources-tab-pane" aria-selected="true">
+                            Available
+                        </button>
+                    </li>
+                    {% else %}
+                    <li class="mb-1">
+                        <button class="dropdown-item" id="available-resources-tab" data-bs-toggle="tab" data-bs-target="#available-resources-tab-pane" type="button" role="tab" aria-controls="available-resources-tab-pane" aria-selected="false">
+                            Available
+                        </button>
+                    </li>
+                    {% endif %}
+                    {% if request.session.employee.role != 'RM' %}
+                    <li class="mb-1">
+                        <button class="dropdown-item" id="pending-resources-tab" data-bs-toggle="tab" data-bs-target="#pending-resources-tab-pane" type="button" role="tab" aria-controls="pending-resources-tab-pane" aria-selected="false">
+                            Request Pending
+                        </button>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <button class="dropdown-item" id="booked-resources-tab" data-bs-toggle="tab" data-bs-target="#booked-resources-tab-pane" type="button" role="tab" aria-controls="booked-resources-tab-pane" aria-selected="false">
+                            Booked
+                        </button>
+                    </li>
+                </ul>
+            </li>
+            {% if request.session.employee.role == 'RM' %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-semibold" id="pending-resources-tab" data-bs-toggle="tab" data-bs-target="#pending-resources-tab-pane" type="button" role="tab" aria-controls="pending-resources-tab-pane" aria-selected="false">
+                    Pending Requests
+                </button>
+            </li>
+            {% else %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="your-resources-tab" data-bs-toggle="tab" data-bs-target="#your-resources-tab-pane" type="button" role="tab" aria-controls="your-resources-tab-pane" aria-selected="false">
+                    Your Resources
+                </button>
+            </li>
+            {% endif %}
+            {% if request.session.employee.role == 'RM' or request.session.employee.role == 'O' %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold" id="add-resource-tab" data-bs-toggle="tab" data-bs-target="#add-resource-tab-pane" type="button" role="tab" aria-controls="add-resource-tab-pane" aria-selected="false">
+                    Add A Resource
+                </button>
+            </li>
+            {% endif %}
+        </ul>
+
+
+        <div class="tab-content py-3 mx-1" id="myTabContent">
+            {% if request.session.employee.role != 'RM' %}
+            <div class="tab-pane active fade show" id="available-resources-tab-pane" role="tabpanel" aria-labelledby="available-resources-tab" tabindex="0">
+                {% for resource in availableResources %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-info-subtle rounded-3">
+                        <div class="fw-semibold col-md-auto mb-1 mb-md-0">{{resource.resourceID}} : {{resource.name}}</div>
+                        <div class="row align-items-center">
+                            <div class="col-md-auto text-muted">Created : {{resource.created}}</div>
+                            {% if request.session.employee.role != 'RM' %}
+                            <div class="col-md text-end">
+                                <a class="btn btn-outline-dark btn-sm" href="{% url 'RequestResource' resourceID=resource.resourceID %}">Request</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No resources to display.</i>
+                </div> 
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="tab-pane fade" id="available-resources-tab-pane" role="tabpanel" aria-labelledby="available-resources-tab" tabindex="0">
+                {% for resource in availableResources %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-info-subtle rounded-3">
+                        <div class="fw-semibold col-md-auto mb-1 mb-md-0">{{resource.resourceID}} : {{resource.name}}</div>
+                        <div class="row align-items-center">
+                            <div class="col-md-auto text-muted">Created : {{resource.created}}</div>
+                            {% if request.session.employee.role != 'RM' %}
+                            <div class="col-md text-end">
+                                <a class="btn btn-outline-dark btn-sm" href="{% url 'RequestResource' resourceID=resource.resourceID %}">Request</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No resources to display.</i>
+                </div> 
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if request.session.employee.role != 'RM' %}
+            <div class="tab-pane fade" id="pending-resources-tab-pane" role="tabpanel" aria-labelledby="pending-resources-tab" tabindex="0">
+                {% for resource in pendingResources %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-warning-subtle rounded-3">
+                        <div class="fw-semibold col-md-auto mb-1 mb-md-0">{{resource.resourceID}} : {{resource.name}}</div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-auto text-muted">Created : {{resource.created}}</div>
+                        </div>
+                        <table class="mb-3">
+                            <tr>
+                                <td class="fw-semibold">Booking Type</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.get_bookingType_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Requested By</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedByName }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Booking Slot</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedFrom}} to {{resource.bookedTill}}</td>                            
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No resources to display.</i>
+                </div> 
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="tab-pane active fade show" id="pending-resources-tab-pane" role="tabpanel" aria-labelledby="pending-resources-tab" tabindex="0">
+                {% for resource in pendingResources %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-warning-subtle rounded-3">
+                        <div class="fw-semibold col-md-auto mb-1 mb-md-0">{{resource.resourceID}} : {{resource.name}}</div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-auto text-muted">Created : {{resource.created}}</div>
+                        </div>
+                        <table class="mb-3">
+                            <tr>
+                                <td class="fw-semibold">Booking Type</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.get_bookingType_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Requested By</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedByName }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Booking Slot</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedFrom}} to {{resource.bookedTill}}</td>                            
+                            </tr>
+                        </table>
+                        <form method="POST" class="text-end mb-1">
+                            {% csrf_token %}
+                            <input type="hidden" name="resourceID" value="{{ resource.resourceID }}" />
+                            <input class="btn btn-sm btn-danger me-1" name="action" type="submit" value="Reject"/>
+                            <input class="btn btn-sm btn-success" name="action" type="submit" value="Approve">
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No resources to display.</i>
+                </div> 
+                {% endfor %}
+            </div>
+            {% endif %}
+
+
+            <div class="tab-pane fade" id="booked-resources-tab-pane" role="tabpanel" aria-labelledby="booked-resources-tab" tabindex="0">
+                {% for resource in bookedResources %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-danger-subtle rounded-3">
+                        <div class="fw-semibold mb-2" style="font-size: 18px;">{{resource.resourceID}} : {{resource.name}}</div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-auto text-muted">Created : {{resource.created}}</div>
+                        </div>
+                        <div class="mb-2"><span class="fw-semibold">Purpose </span>: {{ resource.bookingPurpose }} </div>
+                        <table class="mb-3">
+                            <tr>
+                                <td class="fw-semibold">Booking Type</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.get_bookingType_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Booked By</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedByName }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Booking Slot</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedFrom}} to {{resource.bookedTill}}</td>                            
+                            </tr>
+                        </table>
+                        <form method="POST" class="text-end mb-1">
+                            {% csrf_token %}
+                            <input type="hidden" name="resourceID" value="{{ resource.resourceID }}" />
+                            <input class="btn btn-sm btn-success me-1" name="action" type="submit" value="Mark As Available"/>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No resources to display</i>
+                </div> 
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="your-resources-tab-pane" role="tabpanel" aria-labelledby="your-resources-tab" tabindex="0">
+                {% for resource in yourResources %}
+                <div class="row px-2 mb-3">
+                    <div class="py-2 px-3 bg-success-subtle rounded-3">
+                        <div class="fw-semibold mb-2" style="font-size: 18px;">{{resource.resourceID}} : {{resource.name}}</div>
+                        <div class="mb-2"><span class="fw-semibold">Purpose </span>: {{ resource.bookingPurpose }} </div>
+                        <table class="mb-3">
+                            <tr>
+                                <td class="fw-semibold">Booking Type</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.get_bookingType_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Booked By</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedByName }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Booking Slot</td>
+                                <td class="px-2">:</td>
+                                <td>{{resource.bookedFrom}} to {{resource.bookedTill}}</td>                            
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No resources to display</i>
+                </div> 
+                {% endfor %}
+            </div>
+
+            {% if request.session.employee.role == 'RM' or request.session.employee.role == 'O' %}
+            <div class="tab-pane fade" id="add-resource-tab-pane" role="tabpanel" aria-labelledby="add-resource-tab" tabindex="0">
+                {% include 'resource/createResource.html' %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

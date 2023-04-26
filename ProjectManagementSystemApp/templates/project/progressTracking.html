@@ -1,0 +1,101 @@
+<div class="row">
+  {% if totalTasks %}
+  <div class="col-md-6">
+      <canvas id="taskStatusChart"></canvas>
+  </div>
+  
+  {% if project.completedTasks %}
+  <div class="col-md-6">
+    <canvas id="taskDeadlineChart"></canvas>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="col-md-12 text-center">
+    <i class="text-center">No tasks exist for this project.</i>
+  </div>
+  {% endif %}
+</div>
+
+
+<script>
+  const taskStatusCtx = document.getElementById('taskStatusChart');
+  new Chart(taskStatusCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Assigned', 'Under Review', 'Completed'],
+      datasets: [{
+        label: '# of Tasks',
+        data: {{ tasksByStatus }},
+        borderWidth: 1,
+        backgroundColor: ['rgba(235, 168, 54, 0.5)', 'rgba(39, 166, 245, 0.5)', 'rgba(36, 173, 48, 0.5)'],
+        borderColor: ['rgba(235, 168, 54, 0.8)', 'rgba(39, 166, 245, 0.8)', 'rgba(36, 173, 48, 0.8)'],
+      }]
+    },
+    options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '50%',
+          radius: '80%',
+          circumference: '360',
+          rotation: '-90',
+          plugins: {
+              legend: {
+                  position: 'bottom',
+              },
+              subtitle: {
+                  display: true,
+                  text: 'Completion: {{completionPercentage|floatformat:2}} %',
+                  font: {size: '14'},
+              },
+              title: {
+                  display: true,
+                  text: 'Tasks: Status',
+                  font: {size: '16'},
+              },
+          },
+      },
+  });
+</script>
+
+{% if project.completedTasks %}
+<script>
+  const taskDeadlineCtx = document.getElementById('taskDeadlineChart');
+  new Chart(taskDeadlineCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Over Deadline', 'Within Deadline'],
+      datasets: [{
+        label: '# of Tasks',
+        data: [{{ project.overdeadlineTasks }}, {{ project.completedTasks }} - {{  project.overdeadlineTasks }}],
+        borderWidth: 1,
+        backgroundColor: ['rgba(230, 39, 39, 0.5)', 'rgba(36, 173, 48, 0.5)'],
+        borderColor: ['rgba(230, 39, 39, 0.8)', 'rgba(36, 173, 48, 0.8)'],
+      }]
+    },
+    options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '50%',
+          radius: '80%',
+          circumference: '360',
+          rotation: '-90',
+          plugins: {
+              legend: {
+                  position: 'bottom',
+              },
+              subtitle: {
+                  display: true,
+                  text: 'Over-Deadline Tasks: ' + (({{project.overdeadlineTasks}}/{{project.completedTasks}}) * 100).toFixed(2) + ' %',
+                  font: {size: '14'},
+              },
+              title: {
+                  display: true,
+                  text: 'Tasks: Deadline',
+                  font: {size: '16'},
+              },
+          },
+      },
+  });
+</script>
+{% endif %}

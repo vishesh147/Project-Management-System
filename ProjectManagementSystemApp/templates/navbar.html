@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+
+<style>
+  body {
+  background-color: #fbfbfb;
+}
+@media (min-width: 991.98px) {
+  main {
+    margin-left: 240px;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 240px;
+  z-index: 100;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+/* .sidebar .active {
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+} */
+</style>
+
+<html lang="en">
+    <head>
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Project Management System</title>
+        <!-- <link rel="icon" type="image/x-icon" href=""> -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    </head>
+    <body class="bg-light" onresize="initSidebar()" onload="initSidebar()">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+        <header>
+          <!-- Sidebar -->
+          <nav id="navbarNav" style="z-index: 1025" class="pt-5 collapse show collapse-horizontal sidebar bg-white navbar-collapse border border-right">
+            <div class="position-sticky">
+
+              <div class="list-group list-group-flush mx-3 mt-2">
+                <div class="row justify-content-center my-3">
+                  <div class="text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                    </svg>       
+                  </div>
+                  <div class="fw-semibold text-center">
+                    {{request.session.employee.name}}
+                  </div>
+                  <div class="text-muted text-center mb-2">
+                    {{request.session.employee.employeeID}}
+                  </div>
+                  <div class="text-center ">
+                    <a href="{% url 'Logout' %}"
+                        class="btn btn-outline-danger btn-sm">
+                        Logout
+                    </a>
+                  </div>
+                </div>
+
+                {% if request.session.employee.role == 'O' %}
+                <a href="{% url 'CreateProject' %}"
+                    class="list-group-item list-group-item-action rounded py-2">
+                    <span class="text-nowrap">Create New Project</span>
+                </a>
+                {% endif %}
+                
+                {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+                <a href="{% url 'ViewProjects' %}"
+                   class="list-group-item list-group-item-action rounded py-2"> 
+                   <span class="text-nowrap">Manage Projects</span>
+                </a>
+                {% elif request.session.employee.role == 'E' and request.session.employee.teamID %}
+                <a href="{% url 'ViewProjects' %}"
+                   class="list-group-item list-group-item-action rounded py-2"> 
+                   <span class="text-nowrap">My Projects</span>
+                </a>
+                {% endif %}
+
+                {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+                <a href="{% url 'ManageTeams' %}"
+                   class="list-group-item list-group-item-action py-2 rounded"
+                   aria-current="true">
+                  <span class="text-nowrap">Manage Teams</span>
+                </a>
+                {% elif request.session.employee.role == 'E' and request.session.employee.teamID %}
+                <a href="{% url 'TeamDashboard' teamID=request.session.employee.teamID %}"
+                    class="list-group-item list-group-item-action py-2 rounded"
+                    aria-current="true">
+                    <span class="text-nowrap">My Team</span>
+                </a>
+                {% elif request.session.employee.role == 'RM' %}
+                <a href="{% url 'ManageTeams' %}"
+                    class="list-group-item list-group-item-action py-2 rounded"
+                    aria-current="true">
+                    <span class="text-nowrap">View Teams</span>
+                </a>
+                {% endif %}
+
+                {% if request.session.employee.role == 'RM' or request.session.employee.role == 'O' %}
+                <a href="{% url 'Resources' %}"
+                    class="list-group-item list-group-item-action rounded py-2">
+                    <span class="text-nowrap">Manage Resources</span>
+                </a>
+                {% else %}
+                <a href="{% url 'Resources' %}"
+                    class="list-group-item list-group-item-action rounded py-2">
+                    <span class="text-nowrap">View Resources</span>
+                </a>
+                {% endif %}
+
+              </div>
+            </div>
+          </nav>        
+          
+          <!-- Navbar -->
+          <nav id="main-navbar" class="navbar navbar-expand-lg fixed-top bg-white border border-bottom">
+            <div class="container-fluid mx-2">
+              <a class="d-md-none navbar-brand fw-semibold" href="#">Logo</a>
+              <a class="d-none d-md-block navbar-brand fw-semibold" href="#">Project Management System</a>
+              <button class="d-lg-none navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            </div>
+          </nav>
+          <!-- Navbar -->
+        </header>
+
+        <!--Main layout-->
+        
+        {% if messages %}
+        {% for msg in messages %}
+            {% if msg.tags == 'error' %}
+                <div class="fixed-top alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    {{ msg }}
+                </div>
+            {% else %}
+                <div class="fixed-top alert alert-success alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    {{ msg }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+
+
+        <main style="margin-top: 60px">
+          <div class="container-fluid">
+            {% block content %}
+            {% endblock %}   
+          </div>
+        </main>
+
+    </body>
+
+    <script>
+      function initSidebar() {
+        var sidebar = document.getElementsByClassName('sidebar');
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.Width;
+        if(sidebar.length > 0) {
+            if(width < 991.98) {
+                sidebar[0].className = 'pt-5 collapse collapse-horizontal sidebar bg-white navbar-collapse border border-right'; 
+            }
+            else{
+              sidebar[0].className = 'pt-5 collapse show collapse-horizontal sidebar bg-white navbar-collapse border border-right';
+            }
+        }
+      }
+    </script>
+
+</html>
+

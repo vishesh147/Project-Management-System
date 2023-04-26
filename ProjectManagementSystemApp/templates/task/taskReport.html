@@ -1,0 +1,39 @@
+{% if task.status == 'R' or task.status == 'C' %}
+<div class="col-12 mb-2 mt-2">
+    <h4 class="m-0">Task Report</h4>
+    <hr class="border-3 my-2">
+</div>
+<div class="col-12">
+    <div class="row px-2">
+        <div class="p-3 bg-body-secondary rounded-3">
+            <div>
+                <table class="mb-3">
+                    <tr>
+                        <td class="fw-semibold">Submitted By</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.employeeID}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Submitted On</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.submitted|date:"D, d M Y"}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Utilized Budget</td>
+                        <td class="px-2">:</td>
+                        <td>{{task.utilizedBudget}}</td>                            
+                    </tr>
+                </table>
+                <div class="bg-white p-2 px-3 mb-3 rounded-2">
+                    {{ task.report|safe }}
+                </div>
+                {% if task.status == 'C' %}
+                <div>
+                    {% include 'task/rating.html' with value=task.rating %}
+                </div>
+                {% endif %}
+            </div>            
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,53 @@
+<div class="row px-1 mb-2">
+    <div class="col-12 mb-3">
+        <div class="row px-2 mb-3">
+            <div class="py-2 px-3 bg-info-subtle rounded-3">
+                <div class="mb-2">{{team.description}}</div>
+                <table class="mb-1">
+                    <tr>
+                        <td class="fw-semibold">Managed By</td>
+                        <td class="px-2">:</td>
+                        <td>{{team.managerName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Team Size</td>
+                        <td class="px-2">:</td>
+                        <td>{{team.size}}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold">Created</td>
+                        <td class="px-2">:</td>
+                        <td>{{team.created}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Members -->
+    <div class="col-12 mb-2">
+        <h5 class="m-0">Current Members</h5>
+        <hr class="border-3 my-2 mb-1">
+    </div>
+    <div class="col-12">
+        <div class="row px-2 mb-2">
+            <div class="col">
+                {% for member in members %}
+                <div class="row align-items-center mb-2 bg-success-subtle rounded-3 p-1 py-2">
+                    <span class="col-md mb-1 mb-md-0 fw-semibold">{{member.name}}</span>
+                    <span class="col-md-auto mb-1 text-muted" style="font-size: 14px">
+                        {% include 'team/rating.html' with value=member.avgRating %}
+                    </span>
+                    <span class="col-12 text-muted" style="font-size: 14px">
+                        Joined on {{member.joiningDate}}
+                    </span>
+                </div>
+
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">Team has no members</i>
+                </div> 
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

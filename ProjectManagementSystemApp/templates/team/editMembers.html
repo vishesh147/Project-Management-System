@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-12 mb-2">
+        {% if type == 'success' %}
+        <h5 class="m-0">Add Members</h5>
+        {% else %}
+        <h5 class="m-0">Remove Members</h5>
+        {% endif %}
+        <hr class="border-3 my-2">
+    </div>
+    <div class="col-12 mb-3">
+        <div class="row">
+            <form method="POST" action="{% url 'EditMembers' teamID=team.teamID %}">
+                {% csrf_token %}
+                {% for employee in employeeList %}
+                <div class="row mb-2">
+                    <div class="w-100">
+                        <input type="checkbox" class="btn-check" id="btn-check-outlined-{{employee}}" autocomplete="off" 
+                            name="{{employee}}">
+                        <label class="w-100 btn btn-outline-{{type}}" for="btn-check-outlined-{{employee}}">
+                            <div class="row">
+                                <span class="col text-start">
+                                    {{ employee.name }} ({{ employee }})
+                                </span> 
+                                <span class="col-auto text-end fw-light">
+                                    Joined: {{employee.joiningDate}}  
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No employees to display.</i>
+                </div>
+                {% endfor %}
+
+                <div class="row mb-2">
+                    <div class="mt-1">
+                        {% if type == 'success' %}
+                        <input type="hidden" value="add" name="type" />
+                        {% else %}
+                        <input type="hidden" value="remove" name="type" />
+                        {% endif %}
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </div>
+                </div>
+            </form>   
+        </div>
+    </div>
+</div>

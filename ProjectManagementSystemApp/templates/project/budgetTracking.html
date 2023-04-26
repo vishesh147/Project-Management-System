@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="BudgetUtilizationChart"></canvas>
+    </div>
+    
+    {% if project.completedTasks %}
+    <div class="col-md-6">
+      <canvas id="taskBudgetChart"></canvas>
+    </div>
+    {% endif %}
+</div>
+
+  
+
+<script>
+const BudgetUtilizationCtx = document.getElementById('BudgetUtilizationChart');
+const utilization = {{utilizedBudget}} / {{allocatedBudget}};
+new Chart(BudgetUtilizationCtx, {
+    type: 'doughnut',
+    data: {
+    labels: ['Utilized Budget', 'Remaining Budget'],
+    datasets: [{
+        label: 'Rs. ',
+        data: [{{utilizedBudget}}, {{allocatedBudget}}-{{utilizedBudget}}],
+        borderWidth: 1,
+        backgroundColor: [ 'rgba(39, 166, 245, 0.5)', 'rgba(36, 173, 48, 0.5)'],
+        borderColor: ['rgba(39, 166, 245, 0.8)', 'rgba(36, 173, 48, 0.8)'],
+    }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        radius: '50%',
+        circumference: '180',
+        rotation: '-90',
+        plugins: {
+            legend: {
+                position: 'bottom',
+            },
+            subtitle: {
+                display: true,
+                text: 'Utilization: ' + utilization + '%',
+                font: {size: '14'},
+            },
+            title: {
+                display: true,
+                text: 'Project Budget',
+                font: {size: '16'},
+            },
+        },
+    },
+});
+</script>
+
+
+{% if project.completedTasks %}
+<script>
+  const taskBudgetCtx = document.getElementById('taskBudgetChart');
+  new Chart(taskBudgetCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Over Budget', 'Within Budget'],
+      datasets: [{
+        label: '# of Tasks',
+        data: [{{ project.overbudgetTasks }}, {{ project.completedTasks }} - {{  project.overbudgetTasks }}],
+        borderWidth: 1,
+        backgroundColor: ['rgba(230, 39, 39, 0.5)', 'rgba(36, 173, 48, 0.5)'],
+        borderColor: ['rgba(230, 39, 39, 0.8)', 'rgba(36, 173, 48, 0.8)'],
+      }]
+    },
+    options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '50%',
+          radius: '80%',
+          circumference: '360',
+          rotation: '-90',
+          plugins: {
+              legend: {
+                  position: 'bottom',
+              },
+              subtitle: {
+                  display: true,
+                  text: 'Over-Budget Tasks: ' + (({{project.overbudgetTasks}}/{{project.completedTasks}}) * 100).toFixed(2) + ' %',
+                  font: {size: '14'},
+              },
+              title: {
+                  display: true,
+                  text: 'Tasks: Deadline',
+                  font: {size: '16'},
+              },
+          },
+      },
+  });
+</script>
+{% endif %}

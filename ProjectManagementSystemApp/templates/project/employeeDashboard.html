@@ -1,0 +1,28 @@
+<!-- Tabs --->
+<ul class="nav nav-tabs sticky-top bg-light" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold active" id="in-progress-tasks-tab" data-bs-toggle="tab" data-bs-target="#in-progress-tasks-tab-pane" type="button" role="tab" aria-controls="in-progress-tasks-tab-pane" aria-selected="true">
+            Assigned Tasks
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold" id="submitted-for-review-tasks-tab" data-bs-toggle="tab" data-bs-target="#submitted-for-review-tasks-tab-pane" type="button" role="tab" aria-controls="submitted-for-review-tasks-tab-pane" aria-selected="false">
+            Submitted Tasks
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold" id="completed-tasks-tab" data-bs-toggle="tab" data-bs-target="#completed-tasks-tab-pane" type="button" role="tab" aria-controls="completed-tasks-tab-pane" aria-selected="false">
+            Completed Tasks
+        </button>
+    </li>
+</ul>
+
+
+<div class="tab-content py-3 mx-1" id="myTabContent">
+    <!-- Tasks Tab -->
+    {% include 'task/tasks.html' with notitle='1' active="active" show="show" color="warning" status="In Progress" tasks=inprogress %}
+    <!-- Submitted For Review -->
+    {% include 'task/tasks.html' with notitle='1' status='Submitted For Review' color="info" tasks=review %}
+    <!-- Completed -->
+    {% include 'task/tasks.html' with notitle='1' status='Completed' color="success" tasks=completed %}
+</div>
