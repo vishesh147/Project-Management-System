@@ -27,11 +27,9 @@ SECRET_KEY = 'django-insecure-igz+t44e=sp18-@2dbh8i5s+m7%ql5u@rtq6s*$ep4h5+ui6k@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://project-management-system.up.railway.app/'
-]
-
 ALLOWED_HOSTS = ["project-management-system.up.railway.app"]
+
+CSRF_TRUSTED_ORIGINS = ['https://project-management-system.up.railway.app']
 
 # Application definition
 
