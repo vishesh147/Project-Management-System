@@ -28,6 +28,8 @@ urlpatterns = [
     path('edit-project/<slug:projectID>', views.EditProject, name='EditProject'),
     path('view-projects/', views.ViewProjects, name='ViewProjects'),
     path('project-dashboard/<slug:projectID>', views.ProjectDashboard, name='ProjectDashboard'),
+    path('project-complete/<slug:projectID>', views.MarkProjectAsCompleted, name='MarkProjectAsCompleted'),    
+
     path('manage-teams/', views.ManageTeams, name='ManageTeams'),
     path('team-dashboard/<slug:teamID>', views.TeamDashboard, name='TeamDashboard'),
 

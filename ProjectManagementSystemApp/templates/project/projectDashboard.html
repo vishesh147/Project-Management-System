@@ -39,7 +39,9 @@
                         </tr>
                     </table>
                     {% if request.session.employee.role == 'O' %}
+                    
                     <div class="text-end mb-1">
+                        <a class="btn btn-sm btn-outline-success me-1" href="{% url 'MarkProjectAsCompleted' projectID=project.projectID %}">Mark As Completed</a>
                         <a class="btn btn-sm btn-outline-dark" href="{% url 'EditProject' projectID=project.projectID %}">Edit Project</a>
                     </div>
                     {% endif %}

@@ -376,6 +376,32 @@ def ProjectDashboard(request, projectID):
 
 
 @login_required
+def MarkProjectAsCompleted(request, projectID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "Session logged out due to inactivity.")
+        return redirect('Logout')
+    
+    try:
+        project = Project.objects.get(projectID=projectID)
+    except:
+        raise ObjectDoesNotExist
+    
+    if Task.objects.filter(projectID=projectID, status='C').count() == Task.objects.filter(projectID=projectID).count():
+        project.status = 'C'
+        project.completed = timezone.now()
+        project.save()
+        messages.success(request, projectID + ' : Project Completed Successfully.')
+        return redirect('ViewProjects')
+    else:
+        messages.error(request, projectID + ' : Tasks not completed. Cannot mark project as complete.')
+        return redirect(reverse("ProjectDashboard", kwargs={"projectID": projectID}))
+
+
+@login_required
 def CreateTask(request, projectID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
@@ -532,6 +558,7 @@ def CreateResource(request):
     return redirect("Resources")
 
 
+@login_required
 def RequestResource(request, resourceID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
@@ -574,6 +601,7 @@ def RequestResource(request, resourceID):
     return render(request, 'resource/requestResource.html', {'resource':resource, 'teams':teams})
 
 
+@login_required
 def ManageResources(request):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
@@ -628,6 +656,7 @@ def ManageResources(request):
             })
 
 
+@login_required
 def DeleteResource(request, resourceID):
     if request.user.is_staff:
         messages.error(request, "Staff accounts cannot be used.")
