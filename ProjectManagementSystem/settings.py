@@ -79,7 +79,9 @@ DATABASES = {
             'ENGINE': 'djongo',
             'NAME': 'PMSDB',
             'CLIENT': {
-                'host': 'mongodb://mongo:oyd5CXpDF7ZQ5UHI4fJ2@containers-us-west-206.railway.app:6478'
+                'host': 'mongodb://mongo:oyd5CXpDF7ZQ5UHI4fJ2@containers-us-west-206.railway.app:6478',
+                'username':'mongo',
+                'password':'oyd5CXpDF7ZQ5UHI4fJ2'
             }  
         }
 }
