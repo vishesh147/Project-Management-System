@@ -23,9 +23,15 @@
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
+            {% if project.status == 'C' %}
+            <button class="dropdown-item" disabled id="create-task-tab" data-bs-toggle="tab" data-bs-target="#create-task-tab-pane" type="button" role="tab" aria-controls="create-task-tab-pane" aria-selected="false">
+                Create Task
+            </button>
+            {% else %}
             <button class="dropdown-item" id="create-task-tab" data-bs-toggle="tab" data-bs-target="#create-task-tab-pane" type="button" role="tab" aria-controls="create-task-tab-pane" aria-selected="false">
                 Create Task
             </button>
+            {% endif %}
             </li>
         </ul>
     </li>

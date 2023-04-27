@@ -84,14 +84,20 @@
                                 <td>{{project.teamName}}</td>                            
                             </tr>
                         </table>
-                        {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
-                        <div class="mb-2 text-end">
-                            <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">Manage</a>
-                        </div>
-                        {% elif request.session.employee.role == 'E' %}
+                        {% if project.status == 'C' %}
                         <div class="mb-2 text-end">
                             <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">View Details</a>
                         </div>
+                        {% else %}
+                            {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
+                            <div class="mb-2 text-end">
+                                <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">Manage</a>
+                            </div>
+                            {% elif request.session.employee.role == 'E' %}
+                            <div class="mb-2 text-end">
+                                <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">View Details</a>
+                            </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
