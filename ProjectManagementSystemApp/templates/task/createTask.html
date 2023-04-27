@@ -25,7 +25,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea name='description' class="form-control" placeholder="Describe the task" style="height: 100px" required>{{task.description}}</textarea>
+                        <textarea required name='description' class="form-control" placeholder="Describe the task" style="height: 100px">{{task.description}}</textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Deadline</label>
-                            <input type="date" name="deadline" class="form-control" value="{{task.deadline}}">
+                            <input required type="date" name="deadline" class="form-control" value="{{task.deadline}}">
                         </div>
                     </div>
                     {% if task %}
@@ -94,7 +94,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Deadline</label>
-                            <input type="date" name="deadline" class="form-control" value='{{task.deadline|date:"Y-m-d" }}' required>
+                            <input required type="date" name="deadline" class="form-control" value='{{task.deadline|date:"Y-m-d" }}'>
                         </div>
                     </div>
                     {% if task %}
