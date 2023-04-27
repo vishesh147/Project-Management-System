@@ -59,6 +59,10 @@
                         {% endif %}
                     </div>
                 </div>
+                {% empty %}
+                <div class="row justify-content-center">
+                    <i class="text-center">No teams to display.</i>
+                </div> 
                 {% endfor %}
             </div>
             {% if request.session.employee.role == 'O' %}
