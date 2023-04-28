@@ -1,58 +1,21 @@
-<!DOCTYPE html>
-<html lang="en" class="bg-dark">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Project Management System</title>
-        <!-- <link rel="icon" type="image/x-icon" href=""> -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    </head>
-    <body class="bg-light" onresize="initSidebar()" onload="initSidebar()">
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+{% extends 'landing.html' %}
+{% load static %}
 
-        {% if messages %}
-        {% for msg in messages %}
-            {% if msg.tags == 'error' %}
-                <div class="fixed-top alert alert-danger alert-dismissible fade show" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                    {{ msg }}
-                </div>
-            {% else %}
-                <div class="fixed-top alert alert-success alert-dismissible fade show" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                    {{ msg }}
-                </div>
-            {% endif %}
-        {% endfor %}
-        {% endif %}
+{% block content %}
+<div class="row my-3 my-md-4 justify-content-center">
+    <img style="height: 200px; width: auto;" src="{% static 'images/logo.png' %}"/>
+</div>
+<form method="POST" class="mx-sm-3 mx-1"">
+    {% csrf_token %}
+    <div class="mb-2">
+        <input maxlength="10" type="text" class="form-control" placeholder="Employee ID" name="username" required>
+    </div>
+    <div class="mb-3">
+        <input type="password" class="form-control" placeholder="Password" name="password" required>
+    </div>
+    <input class="btn btn-success w-100 mb-2" type="submit" value="Login">
+</form>
+{% endblock %}
 
-        <div class="container-fluid bg-light vh-100">
-            <div class="row justify-content-center align-items-center mx-1 h-100">
-                <div class="col-auto p-3 py-4 p-md-5 text-center mb-5 bg-body-secondary rounded rounded-5" >
-                    <h1 class="mb-3">Project Management System</h1>
-                    {% block content %}
-                    <div class="row my-3 my-md-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                        </svg>
-                    </div>
-                    <form method="POST" class="mx-sm-3 mx-1"">
-                        {% csrf_token %}
-                        <div class="mb-2">
-                            <input maxlength="10" type="text" class="form-control" placeholder="Employee ID" name="username" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" placeholder="Password" name="password" required>
-                        </div>
-                        <input class="btn btn-success w-100 mb-2" type="submit" value="Login">
-                    </form>
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
 
 
