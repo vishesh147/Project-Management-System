@@ -10,8 +10,11 @@
     <div class="mb-2">
         <input maxlength="10" type="text" class="form-control" placeholder="Employee ID" name="username" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <input type="password" class="form-control" placeholder="Password" name="password" required>
+    </div>
+    <div class="mb-3 text-end">
+        <a href="{% url 'password_reset' %}" style="text-decoration: none;">Forgot Password ?</a>
     </div>
     <input class="btn btn-success w-100 mb-2" type="submit" value="Login">
 </form>

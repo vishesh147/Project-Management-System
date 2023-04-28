@@ -62,12 +62,17 @@
                   <div class="text-muted text-center mb-2">
                     {{request.session.employee.employeeID}}
                   </div>
-                  <div class="text-center ">
+                  <div class="text-center mb-2">
                     <a href="{% url 'Logout' %}"
                         class="btn btn-outline-danger btn-sm">
                         Logout
                     </a>
                   </div>
+                  <small class="text-center">
+                    <a href="{% url 'password_change' %}" style="text-decoration: none;">
+                      Change Password
+                    </a>
+                  </small>
                 </div>
 
                 {% if request.session.employee.role == 'O' %}

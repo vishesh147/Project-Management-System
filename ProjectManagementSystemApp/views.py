@@ -51,6 +51,7 @@ def Login(request):
     return render(request, 'login.html')
 
 
+
 def Logout(request):
     request.session.flush()
     logout(request)

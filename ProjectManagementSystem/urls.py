@@ -20,10 +20,11 @@ from ProjectManagementSystemApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', views.Landing, name='Landing'),
     path('login/', views.Login, name='Login'),
     path('logout/', views.Logout, name='Logout'),
-
+    
     path('create-project/', views.CreateProject, name='CreateProject'),
     path('edit-project/<slug:projectID>', views.EditProject, name='EditProject'),
     path('view-projects/', views.ViewProjects, name='ViewProjects'),

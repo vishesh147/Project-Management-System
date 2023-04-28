@@ -96,8 +96,8 @@ class Employee(models.Model):
 @receiver(post_save, sender=User)
 def UpdateEmployee(sender, instance=None, created=False, **kwargs):
     if instance.is_staff:
-       pass 
-    if created:
+       pass
+    elif created:
         Employee.objects.create(
             employeeID=instance.username,
             name=instance.get_full_name(),
