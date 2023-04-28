@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en" class="bg-dark">
     <head>
@@ -27,16 +29,17 @@
         {% endfor %}
         {% endif %}
         
-        <div class="container-fluid bg-light vh-100">
+        <div class="container-fluid vh-100"  style="background-image: url('{% static 'images/background.jpg' %}');">
             <div class="row justify-content-center align-items-center mx-2 h-100">
-                <div class="col-auto p-3 py-4 p-md-5 text-center mb-5 bg-body-secondary rounded rounded-5" >
+                <div class="col-auto p-3 py-4 p-md-5 text-center mb-5 rounded rounded-5" >
                     <h1 class="mb-3">Project Management System</h1>
                     {% block content %}
-                    <div class="row my-3 my-md-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
+                    <div class="row my-3 my-md-4 justify-content-center">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
                             <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h11zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-11z"/>
                             <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3z"/>
-                        </svg>
+                        </svg> -->
+                        <img style="height: 300px; width: auto;" src="{% static 'images/logo.png' %}"/>
                     </div>
                     <div class="row mx-3">
                         <a class="btn btn-success w-100" href="{% url 'Login' %}">
