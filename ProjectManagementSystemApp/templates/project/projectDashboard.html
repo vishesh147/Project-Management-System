@@ -38,7 +38,7 @@
                             <td>{{project.deadline|date:"D, d M Y"}}</td>                            
                         </tr>
                     </table>
-                    {% if request.session.employee.role == 'O' %}
+                    {% if request.session.employee.role == 'O' and project.status != 'C' %}
                     <div class="text-end mb-1">
                         <a class="btn btn-sm btn-outline-success me-1" href="{% url 'MarkProjectAsCompleted' projectID=project.projectID %}">Mark As Completed</a>
                         <a class="btn btn-sm btn-outline-dark" href="{% url 'EditProject' projectID=project.projectID %}">Edit Project</a>
