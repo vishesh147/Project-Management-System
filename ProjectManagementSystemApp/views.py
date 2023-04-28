@@ -417,7 +417,7 @@ def CreateTask(request, projectID):
         raise ObjectDoesNotExist
     
     userRole = request.session['employee']['role']
-    if userRole != 'O' and userRole != 'PM':
+    if userRole != 'PM':
         raise PermissionDenied
     
     if userRole == 'PM' and request.session['employee']['employeeID'] != project.managerID:
