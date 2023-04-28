@@ -61,7 +61,7 @@ class Employee(models.Model):
     employeeID = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=64)
     email = models.EmailField()
-    joiningDate = models.DateField(null=True, blank=True)
+    joiningDate = models.DateField(auto_now_add=True, null=True, blank=True)
     salary = models.PositiveIntegerField(default=0)
     role = models.CharField(max_length=6, default='E',
         choices=[
