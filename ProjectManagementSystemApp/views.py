@@ -42,7 +42,6 @@ def Login(request):
             
             request.session.set_expiry(0)
             employee = model_to_dict(Employee.objects.get(employeeID=request.POST['username']))
-            employee['joiningDate'] = employee['joiningDate'].strftime("%d-%m-%Y")
             request.session['employee'] = employee
             login(request, user)
             return redirect('Landing')
@@ -682,3 +681,70 @@ def DeleteResource(request, resourceID):
         messages.error(request, "Cannot delete a resource in use.")
     
     return redirect('Resources')
+
+
+
+@login_required
+def DeleteTask(request, taskID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "Session logged out due to inactivity.")
+        return redirect('Logout')
+    
+    userRole = request.session['employee']['role']
+    if userRole != 'PM':
+        raise PermissionDenied
+    
+    try:
+        task = Task.objects.get(taskID=taskID)
+    except:
+        raise ObjectDoesNotExist
+    
+    if task.managerID != request.session['employee']['employeeID']:
+        raise PermissionDenied
+
+    projectID = task.projectID
+
+    if task.status == 'I':
+        task.delete()
+        messages.success(request, "Task deleted successfully.")
+    else:
+        messages.error(request, "Cannot delete a task under review or completed.")
+    
+    return redirect(reverse("ProjectDashboard", kwargs={"projectID":projectID}))
+
+
+
+@login_required
+def DeleteProject(request, projectID):
+    if request.user.is_staff:
+        messages.error(request, "Staff accounts cannot be used.")
+        return redirect('Logout')
+    
+    if not request.session.get('employee'):
+        messages.error(request, "Session logged out due to inactivity.")
+        return redirect('Logout')
+    
+    userRole = request.session['employee']['role']
+    if userRole != 'O':
+        raise PermissionDenied
+    
+    try:
+        project = Project.objects.get(projectID=projectID)
+    except:
+        raise ObjectDoesNotExist
+    
+    if project.managerID != request.session['employee']['employeeID']:
+        raise PermissionDenied
+
+    if Task.objects.filter(projectID=projectID):
+        messages.success(request, "Cannot delete project already under work.")
+    else:
+        project.delete()
+        messages.success(request, "Task deleted successfully.")
+    
+    return redirect('ViewProjects')
+

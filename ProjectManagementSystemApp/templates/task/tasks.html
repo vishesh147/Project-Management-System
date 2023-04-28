@@ -37,6 +37,9 @@
                             </div>
                             {% elif request.session.employee.employeeID == task.managerID %}
                             <div class="col-md-auto mt-2 text-end">
+                                <a class="btn btn-sm btn-outline-danger" href="{% url 'DeleteTask' taskID=task.taskID %}">Delete</a>
+                            </div>
+                            <div class="col-md-auto mt-2 text-end">
                                 <a class="btn btn-sm btn-outline-dark" href="{% url 'TaskDashboard' taskID=task.taskID %}">View Task</a>
                             </div>
                             {% endif %}

@@ -28,7 +28,8 @@ urlpatterns = [
     path('edit-project/<slug:projectID>', views.EditProject, name='EditProject'),
     path('view-projects/', views.ViewProjects, name='ViewProjects'),
     path('project-dashboard/<slug:projectID>', views.ProjectDashboard, name='ProjectDashboard'),
-    path('project-complete/<slug:projectID>', views.MarkProjectAsCompleted, name='MarkProjectAsCompleted'),    
+    path('project-complete/<slug:projectID>', views.MarkProjectAsCompleted, name='MarkProjectAsCompleted'),
+    path('delete-project/<slug:projectID>', views.DeleteProject, name='DeleteProject'),
 
     path('manage-teams/', views.ManageTeams, name='ManageTeams'),
     path('team-dashboard/<slug:teamID>', views.TeamDashboard, name='TeamDashboard'),
@@ -40,6 +41,7 @@ urlpatterns = [
     path('create-task/', views.CreateTask, name='CreateTask'),
     path('create-task/<slug:projectID>', views.CreateTask, name='CreateTask'),
     path('task-dashboard/<slug:taskID>', views.TaskDashboard, name='TaskDashboard'),
+    path('delete-task/<slug:taskID>', views.DeleteTask, name='DeleteTask'),
   
     path('resources/', views.ManageResources, name='Resources'),
     path('create-resource/', views.CreateResource, name='CreateResource'),

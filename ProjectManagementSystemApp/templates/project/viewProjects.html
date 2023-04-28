@@ -89,6 +89,10 @@
                             <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">View Details</a>
                         </div>
                         {% else %}
+                            {% if request.session.employee.role == 'O' %}
+                            <div class="mb-2 text-end">
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'DeleteProject' projectID=project.projectID %}">Delete</a>
+                            </div>
                             {% if request.session.employee.role == 'O' or request.session.employee.role == 'PM' %}
                             <div class="mb-2 text-end">
                                 <a class="btn btn-outline-dark btn-sm" href="{% url 'ProjectDashboard' projectID=project.projectID %}">Manage</a>
