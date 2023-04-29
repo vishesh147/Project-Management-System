@@ -104,6 +104,7 @@ def CreateTeam(request):
 
 
 # Owner and Project Manager
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def ManageTeams(request):
     if request.user.is_staff:
@@ -128,6 +129,7 @@ def ManageTeams(request):
 
 
 # Owner, PM and Employee
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def TeamDashboard(request, teamID):
     if request.user.is_staff:
@@ -220,6 +222,7 @@ def EditMembers(request, teamID):
 
 
 # Only for Owner
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def CreateProject(request):
     if request.user.is_staff:
@@ -293,6 +296,7 @@ def EditProject(request, projectID):
 
 
 # As per employee type. PM, RM, E(Team-wise), Owner (All)  
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ViewProjects(request):
@@ -321,6 +325,7 @@ def ViewProjects(request):
     return render(request, 'project/viewProjects.html', {'ongoingProjects':ongoingProjects, 'completedProjects':completedProjects})
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def ProjectDashboard(request, projectID):
     if request.user.is_staff:

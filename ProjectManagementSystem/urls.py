@@ -35,11 +35,9 @@ urlpatterns = [
     path('manage-teams/', views.ManageTeams, name='ManageTeams'),
     path('team-dashboard/<slug:teamID>', views.TeamDashboard, name='TeamDashboard'),
 
-    
     path('create-team/', views.CreateTeam, name='CreateTeam'),
     path('edit-members/<slug:teamID>', views.EditMembers, name='EditMembers'),
 
-    path('create-task/', views.CreateTask, name='CreateTask'),
     path('create-task/<slug:projectID>', views.CreateTask, name='CreateTask'),
     path('task-dashboard/<slug:taskID>', views.TaskDashboard, name='TaskDashboard'),
     path('delete-task/<slug:taskID>', views.DeleteTask, name='DeleteTask'),
