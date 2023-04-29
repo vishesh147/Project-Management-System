@@ -398,9 +398,7 @@ def DeleteProject(request, projectID):
         project = Project.objects.get(projectID=projectID)
     except:
         raise ObjectDoesNotExist
-    
-    if project.managerID != request.session['employee']['employeeID']:
-        raise PermissionDenied
+
 
     if Task.objects.filter(projectID=projectID):
         messages.success(request, "Cannot delete project already under work.")
