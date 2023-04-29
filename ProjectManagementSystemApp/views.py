@@ -404,7 +404,7 @@ def DeleteProject(request, projectID):
         messages.success(request, "Cannot delete project already under work.")
     else:
         project.delete()
-        messages.success(request, "Task deleted successfully.")
+        messages.success(request, "Project deleted successfully.")
     
     return redirect('ViewProjects')
 
