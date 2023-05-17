@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ProjectManagementSystemApp',
     'tinymce',
     'whitenoise.runserver_nostatic',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
